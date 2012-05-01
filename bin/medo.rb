@@ -8,7 +8,7 @@ begin
   cmd = ARGV.shift or raise "No command given!"
   raise "No such command: #{cmd}" unless COMMANDS.include?(cmd)
 
-  require_relative "todo-#{cmd}.rb"
+  require_relative "medo-#{cmd}.rb"
 rescue Exception => e
   puts e.message
 end
