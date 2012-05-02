@@ -18,7 +18,7 @@ class FileTaskStorage
 
   def read
     begin
-      File.open(TASKS_FILE, "rb") do |f|
+      File.open(@filename, "rb") do |f|
         BinaryTaskReader.new(f).read
       end
     rescue ArgumentError => e
@@ -27,23 +27,26 @@ class FileTaskStorage
   end
 
   def write(tasks)
-    @tempfile ||= Tempfile.new(File.basename(@filename), :binmode => true)
-    serializer = BinaryTaskPrinter.new(@tempfile)
+    serializer = BinaryTaskPrinter.new(tempfile)
     serializer.add_tasks(tasks)
     serializer.print
   ensure
-    @tempfile.close if @tempfile
+    tempfile.close
   end
 
   def commit
-    FileUtils.cp(@tempfile.path, @filename)
+    FileUtils.cp(tempfile.path, @filename)
   end
 
   def dispose
-    if @tempfile
-      # puts "Removing #{@tempfile.path}"
-      @tempfile.unlink
-    end
+    # puts "Removing #{@tempfile.path}"
+    tempfile.unlink
+  end
+
+  private
+
+  def tempfile
+    @tempfile ||= Tempfile.new(File.basename(@filename), :binmode => true)
   end
 end
 
