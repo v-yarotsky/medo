@@ -3,7 +3,7 @@
 require_relative '../config/environment'
 
 begin
-  COMMANDS = %W(new done list note clear).freeze
+  COMMANDS = %W(new done list note clear delete).freeze
 
   cmd = ARGV.shift or raise "No command given!"
   raise "No such command: #{cmd}" unless COMMANDS.include?(cmd)
