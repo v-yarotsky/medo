@@ -4,7 +4,6 @@ $: << File.expand_path("../bin", File.dirname(__FILE__))
 require 'rubygems'
 require 'bundler/setup'
 require 'fileutils'
-require 'pry'
 
 require 'task'
 require 'version'

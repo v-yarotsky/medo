@@ -16,9 +16,11 @@ require 'medo-done'
 require 'medo-clear'
 require 'medo-delete'
 
+
 Signal.trap("SIGINT") do
   puts "Terminating"
   exit 1
 end
 
+default_command :list
 exit run(ARGV)
