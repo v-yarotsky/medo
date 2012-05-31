@@ -16,11 +16,22 @@ require 'medo-done'
 require 'medo-clear'
 require 'medo-delete'
 
-
 Signal.trap("SIGINT") do
   puts "Terminating"
   exit 1
 end
 
 default_command :list
-exit run(ARGV)
+
+on_error do |e|
+  puts "Error: #{e}"
+end
+
+result = 0
+
+FileTaskStorage.using_storage(TASKS_FILE) do |the_storage|
+  define_singleton_method(:storage) { the_storage }
+  result = run(ARGV)
+end
+
+exit result

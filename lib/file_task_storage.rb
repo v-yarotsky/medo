@@ -39,7 +39,6 @@ class FileTaskStorage
   end
 
   def dispose
-    # puts "Removing #{@tempfile.path}"
     tempfile.unlink
   end
 
