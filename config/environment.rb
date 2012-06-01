@@ -1,11 +1,13 @@
-$: << File.expand_path("../lib", File.dirname(__FILE__))
-$: << File.expand_path("../bin", File.dirname(__FILE__))
+PROJECT_ROOT = File.expand_path('../', File.dirname(__FILE__))
+
+$: << File.join(PROJECT_ROOT, 'lib')
+$: << File.join(PROJECT_ROOT, 'bin')
 
 require 'rubygems'
 require 'bundler/setup'
 require 'fileutils'
 
 require 'task'
-require 'version'
 
-TASKS_FILE = File.expand_path("../tasks.txt", File.dirname(__FILE__))
+version_file = File.join(PROJECT_ROOT, 'VERSION')
+VERSION = File.read(version_file)

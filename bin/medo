@@ -18,6 +18,9 @@ end
 
 default_command :list
 
+TASKS_FILE = File.expand_path("../tasks.txt", File.dirname(__FILE__))
+puts TASKS_FILE
+
 FileTaskStorage.using_storage(TASKS_FILE) do |the_storage|
   define_singleton_method(:storage) { the_storage }
   exit run(ARGV)
