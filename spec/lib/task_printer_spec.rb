@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require 'task_writer'
+require 'medo/task_writer'
 
 describe TaskWriter do
   describe "#add_task" do

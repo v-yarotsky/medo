@@ -1,9 +1,13 @@
 $: << File.expand_path("../lib", File.dirname(__FILE__))
-require 'task'
-require 'text_task_writer'
-require 'binary_task_writer'
-require 'binary_task_reader'
-require 'numbering_text_task_writer'
+
+require 'medo'
+require 'medo/task'
+require 'medo/text_task_writer'
+require 'medo/binary_task_writer'
+require 'medo/binary_task_reader'
+require 'medo/numbering_text_task_writer'
+
+include Medo
 
 fake_clock = Object.new
 

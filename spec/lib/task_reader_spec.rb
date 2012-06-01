@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require 'task_reader'
+require 'medo/task_reader'
 
 describe TaskReader do
   it "must respond to #read" do

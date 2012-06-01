@@ -1,15 +1,21 @@
-#!/usr/bin/env ruby-1.9.3-p125@global
+#!/usr/bin/env ruby
 
-require_relative '../config/environment'
+require 'rubygems'
+require 'bundler/setup'
+require 'fileutils'
 require 'gli'
-require 'file_task_storage'
+
+puts $:
+require 'medo'
+require 'medo/file_task_storage'
 
 include GLI::App
+include Medo
 
 program_desc 'Simple CLI To-Do manager'
 version VERSION
 
-commands_from 'commands'
+commands_from 'medo/commands'
 
 Signal.trap("SIGINT") do
   puts "Terminating"

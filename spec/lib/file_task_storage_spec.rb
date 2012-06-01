@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require 'file_task_storage'
+require 'medo/file_task_storage'
 
 describe FileTaskStorage do
   before(:each) do

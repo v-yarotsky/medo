@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require 'text_task_writer'
+require 'medo/text_task_writer'
 require 'ostruct'
 require 'stringio'
 

@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 require 'ostruct'
-require 'task'
+require 'medo/task'
 
 describe Task do
   it "must have description attribute" do
