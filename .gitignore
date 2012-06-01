@@ -6,3 +6,4 @@ vendor/
 .exrc
 nohup.out
 tasks.txt
+spec/tasks_test.txt

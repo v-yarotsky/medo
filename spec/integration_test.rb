@@ -28,14 +28,18 @@ writer = NumberingTextTaskWriter.new
 writer.add_tasks(tasks)
 writer.write
 
-File.open("tasks.txt", "wb") do |f|
+test_tasks_file = File.join(File.dirname(__FILE__), 'tasks_test.txt')
+
+File.open(test_tasks_file, "wb") do |f|
   serializer = BinaryTaskWriter.new(f)
   serializer.add_tasks(tasks)
   serializer.write
 end
 
-File.open("tasks.txt", "rb") do |f|
+File.open(test_tasks_file, "rb") do |f|
   deserializer = BinaryTaskReader.new(f)
   tasks = deserializer.read
   puts tasks.inspect
 end
+
+FileUtils.rm(test_tasks_file)
