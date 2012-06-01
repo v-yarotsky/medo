@@ -22,6 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Simple CLI todo manager app}
   gem.email = "vladimir.yarotksy@gmail.com"
   gem.authors = ["Vladimir Yarotsky"]
+  gem.files.exclude '.travis.yml'
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

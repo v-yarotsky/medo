@@ -11,33 +11,35 @@ Gem::Specification.new do |s|
   s.authors = ["Vladimir Yarotsky"]
   s.date = "2012-06-01"
   s.email = "vladimir.yarotksy@gmail.com"
-  s.executables = ["bin/medo"]
+  s.executables = ["medo"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README"
   ]
   s.files = [
-    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
+    "LICENSE.txt",
     "README",
     "Rakefile",
     "VERSION",
-    "config/environment.rb",
-    "lib/binary_task_reader.rb",
-    "lib/binary_task_writer.rb",
-    "lib/commands/clear.rb",
-    "lib/commands/delete.rb",
-    "lib/commands/done.rb",
-    "lib/commands/list.rb",
-    "lib/commands/new.rb",
-    "lib/commands/note.rb",
-    "lib/file_task_storage.rb",
-    "lib/numbering_text_task_writer.rb",
-    "lib/task.rb",
-    "lib/task_reader.rb",
-    "lib/task_writer.rb",
-    "lib/text_task_writer.rb",
+    "bin/medo",
+    "lib/medo.rb",
+    "lib/medo/binary_task_reader.rb",
+    "lib/medo/binary_task_writer.rb",
+    "lib/medo/commands/clear.rb",
+    "lib/medo/commands/delete.rb",
+    "lib/medo/commands/done.rb",
+    "lib/medo/commands/list.rb",
+    "lib/medo/commands/new.rb",
+    "lib/medo/commands/note.rb",
+    "lib/medo/file_task_storage.rb",
+    "lib/medo/numbering_text_task_writer.rb",
+    "lib/medo/task.rb",
+    "lib/medo/task_reader.rb",
+    "lib/medo/task_writer.rb",
+    "lib/medo/text_task_writer.rb",
+    "medo.gemspec",
     "spec/integration_test.rb",
     "spec/lib/file_task_storage_spec.rb",
     "spec/lib/task_printer_spec.rb",

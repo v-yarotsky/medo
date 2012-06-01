@@ -1,11 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'bundler/setup'
 require 'fileutils'
 require 'gli'
 
-puts $:
 require 'medo'
 require 'medo/file_task_storage'
 
@@ -24,8 +22,7 @@ end
 
 default_command :list
 
-TASKS_FILE = File.expand_path("../tasks.txt", File.dirname(__FILE__))
-puts TASKS_FILE
+TASKS_FILE = File.join(ENV['HOME'], '.medo-tasks')
 
 FileTaskStorage.using_storage(TASKS_FILE) do |the_storage|
   define_singleton_method(:storage) { the_storage }
