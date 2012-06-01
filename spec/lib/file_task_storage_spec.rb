@@ -12,21 +12,18 @@ describe FileTaskStorage do
 
   describe "#initialize" do
     it "must touch a storage file, so it is created if not exists" do
-      touched = false
-      FileUtils.define_singleton_method :touch do |f|
-        touched = true if f == "f"
-      end
-      FileTaskStorage.new("f")
-      touched.must_equal true
+      catch(:touched) do
+        FileUtils.stub :touch, proc { throw :touched, true } do |f|
+          FileTaskStorage.new("f")
+        end
+      end.must_equal true
     end
   end
 
   describe "#read" do
     it "return empty array on error" do
-      def BinaryTaskReader.read
-        raise
-      end
-      FileTaskStorage.new("f").read.must_equal []
+      class Reader; def read; raise; end; end
+      FileTaskStorage.new("f", Reader, Class).read.must_equal []
     end
   end
 
@@ -42,17 +39,14 @@ describe FileTaskStorage do
     end
 
     it "must close tempfile if error occured" do
+      class Printer; def write; raise; end; end
       mock = MiniTest::Mock.new
-      storage = FileTaskStorage.new("f")
-      storage.define_singleton_method(:tempfile) { mock }
-      mock.expect(:close, nil)
-      BinaryTaskPrinter.define_singleton_method(:new) { |*args| raise }
-      begin
-        storage.write([])
-      rescue
-        #nothing
+      storage = FileTaskStorage.new("f", Class, Printer)
+      storage.stub :tempfile, mock do
+        mock.expect(:close, nil)
+        storage.write([]) rescue nil #nothing
+        mock.verify
       end
-      mock.verify
     end
   end
 

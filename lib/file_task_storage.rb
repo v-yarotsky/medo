@@ -11,15 +11,15 @@ class FileTaskStorage
     storage.dispose if storage
   end
 
-  def initialize(filename)
-    @filename = filename
+  def initialize(filename, reader_class = BinaryTaskReader, printer_class = BinaryTaskPrinter)
+    @filename, @reader_class, @printer_class = filename, reader_class, printer_class
     FileUtils.touch(@filename)
   end
 
   def read
     begin
       File.open(@filename, "rb") do |f|
-        BinaryTaskReader.new(f).read
+        @reader_class.new(f).read
       end
     rescue ArgumentError => e
       []
@@ -27,7 +27,7 @@ class FileTaskStorage
   end
 
   def write(tasks)
-    serializer = BinaryTaskPrinter.new(tempfile)
+    serializer = @printer_class.new(tempfile)
     serializer.add_tasks(tasks)
     serializer.print
   ensure

@@ -1,15 +1,9 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    coderay (1.0.6)
     gli (2.0.0.rc3)
-    method_source (0.7.1)
     minitest (3.0.1)
-    pry (0.9.9.6)
-      coderay (~> 1.0.5)
-      method_source (~> 0.7.1)
-      slop (>= 2.4.4, < 3)
-    slop (2.4.4)
+    rake (0.9.2.2)
 
 PLATFORMS
   ruby
@@ -17,4 +11,4 @@ PLATFORMS
 DEPENDENCIES
   gli (>= 2.0.0.rc3)
   minitest (~> 3.0)
-  pry (~> 0.9)
+  rake (~> 0.9)

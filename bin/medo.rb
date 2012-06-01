@@ -23,15 +23,7 @@ end
 
 default_command :list
 
-on_error do |e|
-  puts "Error: #{e}"
-end
-
-result = 0
-
 FileTaskStorage.using_storage(TASKS_FILE) do |the_storage|
   define_singleton_method(:storage) { the_storage }
-  result = run(ARGV)
+  exit run(ARGV)
 end
-
-exit result
