@@ -1,12 +1,12 @@
-require 'task_printer'
+require 'task_writer'
 
-class BinaryTaskPrinter < TaskPrinter
+class BinaryTaskWriter < TaskWriter
   def initialize(output_stream)
     super()
     @output_stream = output_stream
   end
 
-  def print
+  def write
     @output_stream.write Marshal.dump(@tasks)
   end
 end

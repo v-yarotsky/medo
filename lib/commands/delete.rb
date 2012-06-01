@@ -1,5 +1,3 @@
-require_relative '../config/environment'
-
 desc "Delete a todo"
 command :delete do |c|
   c.action do |global_options, options, args|

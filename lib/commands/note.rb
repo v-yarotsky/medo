@@ -1,5 +1,3 @@
-require_relative '../config/environment'
-
 desc "Add note to a todo"
 command :note do |c|
   c.action do |global_options, options, args|

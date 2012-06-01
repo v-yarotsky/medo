@@ -1,10 +1,10 @@
 require_relative '../spec_helper'
-require 'text_task_printer'
+require 'text_task_writer'
 require 'ostruct'
 require 'stringio'
 
-describe TextTaskPrinter do
-  describe "#print" do
+describe TextTaskWriter do
+  describe "#write" do
     it "must pretty print the task to STDOUT" do
       creation_time = Time.new(2012, 1, 5, 12, 4)
       task = OpenStruct.new(:description => "Buy Milk", 
@@ -13,9 +13,9 @@ describe TextTaskPrinter do
                             :notes       => [])
       fake_output = StringIO.new
 
-      task_printer = TextTaskPrinter.new(fake_output)
-      task_printer.add_task(task)
-      task_printer.print
+      task_writer = TextTaskWriter.new(fake_output)
+      task_writer.add_task(task)
+      task_writer.write
 
       fake_output.string.must_equal <<-TXT
 [ ] Buy Milk (12:04)
@@ -28,8 +28,8 @@ describe TextTaskPrinter do
                                       :completed_at => Time.new(2012, 1, 5, 16, 30),
                                       :done?        => true,
                                       :notes        => ["Note 1", "Note 2"])
-      task_printer.add_task(completed_task)
-      task_printer.print
+      task_writer.add_task(completed_task)
+      task_writer.write
 
       fake_output.string.must_equal <<-TXT
 [ ] Buy Milk   (12:04)

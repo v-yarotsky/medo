@@ -1,4 +1,4 @@
-class TaskPrinter
+class TaskWriter
   def initialize
     @tasks = []
   end
@@ -8,11 +8,11 @@ class TaskPrinter
   end
   alias add_tasks add_task
 
-  def tasks_to_print
+  def tasks_to_write
     @tasks.dup
   end
 
-  def print
+  def write
     raise NotImplementedError
   end
 end

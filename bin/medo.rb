@@ -9,12 +9,7 @@ include GLI::App
 program_desc 'Simple CLI To-Do manager'
 version VERSION
 
-require 'medo-new'
-require 'medo-list'
-require 'medo-note'
-require 'medo-done'
-require 'medo-clear'
-require 'medo-delete'
+commands_from 'commands'
 
 Signal.trap("SIGINT") do
   puts "Terminating"
@@ -27,3 +22,4 @@ FileTaskStorage.using_storage(TASKS_FILE) do |the_storage|
   define_singleton_method(:storage) { the_storage }
   exit run(ARGV)
 end
+

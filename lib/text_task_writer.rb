@@ -1,12 +1,12 @@
-require 'task_printer'
+require 'task_writer'
 
-class TextTaskPrinter < TaskPrinter
+class TextTaskWriter < TaskWriter
   def initialize(output_stream = STDOUT)
     super()
     @output_stream = output_stream
   end
 
-  def print
+  def write
     presented_active_tasks    = present_tasks(active_tasks)
     presented_completed_tasks = present_tasks(completed_tasks)
 

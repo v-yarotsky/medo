@@ -1,18 +1,18 @@
 require_relative '../spec_helper'
-require 'task_printer'
+require 'task_writer'
 
-describe TaskPrinter do
+describe TaskWriter do
   describe "#add_task" do
     it "must accept task to be printed" do
       task = Object.new
-      printer = TaskPrinter.new
-      printer.add_task(task)
-      printer.tasks_to_print.must_equal [task]
+      writer = TaskWriter.new
+      writer.add_task(task)
+      writer.tasks_to_write.must_equal [task]
     end
   end
 
-  it "must respond to #print" do
-    TaskPrinter.new.must_respond_to :print
+  it "must respond to #write" do
+    TaskWriter.new.must_respond_to :write
   end
 end
 

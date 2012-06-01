@@ -1,5 +1,3 @@
-require_relative '../config/environment'
-
 desc "Create a todo"
 command :new do |c|
   c.action do |global_options, options, args|

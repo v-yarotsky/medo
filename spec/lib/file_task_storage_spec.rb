@@ -5,8 +5,6 @@ describe FileTaskStorage do
   before(:each) do
     verbosity, $VERBOSE = $VERBOSE, nil
     load 'fileutils.rb'
-    load 'binary_task_reader.rb'
-    load 'binary_task_printer.rb'
     $VERBOSE = verbosity
   end
 
@@ -39,9 +37,9 @@ describe FileTaskStorage do
     end
 
     it "must close tempfile if error occured" do
-      class Printer; def write; raise; end; end
+      class Writer; def write; raise; end; end
       mock = MiniTest::Mock.new
-      storage = FileTaskStorage.new("f", Class, Printer)
+      storage = FileTaskStorage.new("f", Class, Writer)
       storage.stub :tempfile, mock do
         mock.expect(:close, nil)
         storage.write([]) rescue nil #nothing

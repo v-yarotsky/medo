@@ -1,9 +1,9 @@
 $: << File.expand_path("../lib", File.dirname(__FILE__))
 require 'task'
-require 'text_task_printer'
-require 'binary_task_printer'
+require 'text_task_writer'
+require 'binary_task_writer'
 require 'binary_task_reader'
-require 'numbering_text_task_printer'
+require 'numbering_text_task_writer'
 
 fake_clock = Object.new
 
@@ -24,14 +24,14 @@ tasks = [
   Task.from_attributes(:description => "Buy Juice", :created_at => fake_clock.now, :done => true, :completed_at => fake_clock.now)
 ]
 
-printer = NumberingTextTaskPrinter.new
-printer.add_tasks(tasks)
-printer.print
+writer = NumberingTextTaskWriter.new
+writer.add_tasks(tasks)
+writer.write
 
 File.open("tasks.txt", "wb") do |f|
-  serializer = BinaryTaskPrinter.new(f)
+  serializer = BinaryTaskWriter.new(f)
   serializer.add_tasks(tasks)
-  serializer.print
+  serializer.write
 end
 
 File.open("tasks.txt", "rb") do |f|

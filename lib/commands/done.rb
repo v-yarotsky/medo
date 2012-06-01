@@ -1,5 +1,3 @@
-require_relative '../config/environment'
-
 desc "Mark todo as done"
 command :done do |c|
   c.action do |global_options, options, args|

@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'tempfile'
 require 'binary_task_reader'
-require 'binary_task_printer'
+require 'binary_task_writer'
 
 class FileTaskStorage
   def self.using_storage(filename)
@@ -11,8 +11,8 @@ class FileTaskStorage
     storage.dispose if storage
   end
 
-  def initialize(filename, reader_class = BinaryTaskReader, printer_class = BinaryTaskPrinter)
-    @filename, @reader_class, @printer_class = filename, reader_class, printer_class
+  def initialize(filename, reader_class = BinaryTaskReader, writer_class = BinaryTaskWriter)
+    @filename, @reader_class, @writer_class = filename, reader_class, writer_class
     FileUtils.touch(@filename)
   end
 
@@ -27,9 +27,9 @@ class FileTaskStorage
   end
 
   def write(tasks)
-    serializer = @printer_class.new(tempfile)
+    serializer = @writer_class.new(tempfile)
     serializer.add_tasks(tasks)
-    serializer.print
+    serializer.write
   ensure
     tempfile.close
   end

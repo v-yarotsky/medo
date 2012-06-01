@@ -1,6 +1,6 @@
-require 'text_task_printer'
+require 'text_task_writer'
 
-class NumberingTextTaskPrinter < TextTaskPrinter
+class NumberingTextTaskWriter < TextTaskWriter
   private
 
   def present_tasks(tasks)
