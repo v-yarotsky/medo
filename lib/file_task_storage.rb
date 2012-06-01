@@ -21,7 +21,7 @@ class FileTaskStorage
       File.open(@filename, "rb") do |f|
         @reader_class.new(f).read
       end
-    rescue ArgumentError => e
+    rescue => e
       []
     end
   end
