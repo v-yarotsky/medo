@@ -1,13 +1,14 @@
 # -*- encoding: utf-8 -*-
 
-require 'date'
-
 $:.unshift File.expand_path('../lib/', __FILE__)
+
+require 'medo'
+require 'date'
 
 Gem::Specification.new do |s|
   s.name = "medo"
   s.summary = "Simple CLI todo manager app"
-  s.version = Medo::VERSION
+  s.version = Medo::VERSION.dup
 
   s.authors = ["Vladimir Yarotsky"]
   s.date = Date.today.to_s
