@@ -1,5 +1,5 @@
 desc "Delete a todo"
-command :delete do |c|
+command [:delete, :rm] do |c|
   c.action do |global_options, options, args|
     tasks = storage.read
     number = args.shift.to_i
