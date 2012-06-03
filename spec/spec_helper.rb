@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
-require 'minitest/spec'
-require 'minitest/autorun'
+require 'rspec'
+require 'rspec/autorun'
 
 $: << File.expand_path('../lib', File.dirname(__FILE__))
 

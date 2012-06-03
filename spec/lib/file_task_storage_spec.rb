@@ -9,42 +9,41 @@ describe FileTaskStorage do
   end
 
   describe "#initialize" do
-    it "must touch a storage file, so it is created if not exists" do
-      catch(:touched) do
-        FileUtils.stub :touch, proc { throw :touched, true } do |f|
-          FileTaskStorage.new("f")
-        end
-      end.must_equal true
+    it "should touch a storage file, so it is created if not exists" do
+      FileUtils.should_receive(:touch)
+      FileTaskStorage.new("f")
     end
   end
 
   describe "#read" do
     it "return empty array on error" do
       class Reader; def read; raise; end; end
-      FileTaskStorage.new("f", Reader, Class).read.must_equal []
+      FileTaskStorage.new("f", Reader, Class).read.should ==  []
     end
   end
 
   describe "#write" do
-    it "must write to tempfile only" do
-      mock = MiniTest::Mock.new
+    it "should write to tempfile only" do
       storage = FileTaskStorage.new("f")
-      storage.define_singleton_method(:tempfile) { mock }
-      mock.expect(:write, nil, [Marshal.dump([])])
-      mock.expect(:close, nil)
+      tempfile = mock
+      storage.stub(:tempfile => tempfile)
+      tempfile.should_receive(:write).with(Marshal.dump([]))
+      tempfile.should_receive(:close)
       storage.write([])
-      mock.verify
     end
 
-    it "must close tempfile if error occured" do
-      class Writer; def write; raise; end; end
-      mock = MiniTest::Mock.new
-      storage = FileTaskStorage.new("f", Class, Writer)
-      storage.stub :tempfile, mock do
-        mock.expect(:close, nil)
-        storage.write([]) rescue nil #nothing
-        mock.verify
+    it "should close tempfile if error occured" do
+      class Writer
+        def write
+          raise
+        end
       end
+
+      tempfile = mock
+      storage = FileTaskStorage.new("f", Class, Writer)
+      storage.stub(:tempfile => tempfile)
+      tempfile.should_receive(:close)
+      storage.write([]) rescue nil #nothing
     end
   end
 
