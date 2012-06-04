@@ -1,5 +1,6 @@
 source "http://rubygems.org"
-gem 'gli', '>= 2.0.0.rc3'
+
+gem 'gli', :path => 'vendor/gems/gli'
 
 group :development, :test do
   gem 'rake',  '~> 0.9'

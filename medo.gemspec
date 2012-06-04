@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.specification_version = 3
 
   s.executables = ["medo"]
-  s.files = Dir.glob("{bin,lib,spec}/**/*") + %w[Gemfile Gemfile.lock Rakefile LICENSE.txt README VERSION]
+  s.files = Dir.glob("{bin,lib,spec,features,vendor}/**/*") + %w[Gemfile Gemfile.lock Rakefile LICENSE.txt README VERSION]
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency("gli", ">= 2.0.0.rc3")

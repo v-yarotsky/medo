@@ -2,10 +2,18 @@
 
 require 'rubygems'
 require 'fileutils'
-require 'gli'
 
-require 'medo'
-require 'medo/file_task_storage'
+begin
+  $:.delete_if { |p| p =~ /gli/ }
+  $:.unshift File.expand_path('../../vendor/gems/gli/lib/', __FILE__)
+  require 'gli'
+  require 'medo'
+  require 'medo/file_task_storage'
+rescue LoadError => e #development
+  $: << File.expand_path('../../lib', __FILE__)
+  require 'bundler/setup'
+  retry
+end
 
 include GLI::App
 include Medo
@@ -15,17 +23,20 @@ version VERSION
 
 commands_from 'medo/commands'
 
+default_command :list
+
+desc "A file with tasks"
+flag [:f, "tasks-file"], :default_value => File.join(ENV['HOME'], '.medo-tasks')
+
 Signal.trap("SIGINT") do
   puts "Terminating"
   exit 1
 end
 
-default_command :list
-
-TASKS_FILE = File.join(ENV['HOME'], '.medo-tasks')
-
-FileTaskStorage.using_storage(TASKS_FILE) do |the_storage|
-  define_singleton_method(:storage) { the_storage }
-  exit run(ARGV)
+run(ARGV) do |global_options, command, options, arguments, &cmd|
+  FileTaskStorage.using_storage(global_options.fetch(:"tasks-file")) do |the_storage|
+    define_singleton_method(:storage) { the_storage }
+    cmd.call
+  end
 end
 
