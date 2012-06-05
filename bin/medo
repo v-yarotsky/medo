@@ -28,6 +28,9 @@ default_command :list
 desc "A file with tasks"
 flag [:f, "tasks-file"], :default_value => File.join(ENV['HOME'], '.medo-tasks')
 
+desc "Do not use colorful output"
+switch "no-color", :negatable => false
+
 Signal.trap("SIGINT") do
   puts "Terminating"
   exit 1

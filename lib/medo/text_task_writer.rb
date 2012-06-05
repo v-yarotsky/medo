@@ -46,6 +46,9 @@ module Medo
     end
 
     class TaskPresenter
+
+      class Components < Struct.new(:done, :description, :time, :notes); end
+
       def initialize(task)
         @task = task
       end
@@ -73,7 +76,7 @@ module Medo
           if length
             break_line_to_fit(n, length, options)
           else
-            n.rjust(n.length + done.length + 1)
+            n.rjust(n.size + done.size + 1)
           end
         end.join("\n") + "\n\n"
       end
@@ -83,6 +86,13 @@ module Medo
       end
 
       def to_s(length = nil)
+        c = components(length)
+        "#{c.done} #{c.description} #{c.time}#{c.notes}"
+      end
+
+      private
+
+      def components(length = nil)
         if length
           description_length = length - done.length - time.length - 2
           description_padding = done.length + 1
@@ -93,13 +103,11 @@ module Medo
           notes_padding = notes_first_line_padding + 2
           formatted_notes = notes(notes_length, :first_line_padding => notes_first_line_padding, :left_padding => notes_padding)
 
-          "#{done} #{formatted_description} #{time}#{formatted_notes}"
+          Components.new(done, formatted_description, time, formatted_notes)
         else
-          "#{done} #{description} #{time}#{notes}"
+          Components.new(done, description, time, notes)
         end
       end
-
-      private
 
       def break_line_to_fit(str, length, options = {})
         first_line_padding = options[:first_line_padding]

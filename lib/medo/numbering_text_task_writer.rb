@@ -4,10 +4,10 @@ module Medo
   class NumberingTextTaskWriter < TextTaskWriter
     private
 
-    def present_tasks(tasks)
+    def present_tasks(tasks, presenter_class = NumberingTaskPresenter)
       max_tasks_count = [active_tasks.count, completed_tasks.count].max
       tasks.each_with_index.map do |t, i|
-        NumberingTaskPresenter.new(t, i + 1, max_tasks_count)
+        presenter_class.new(t, i + 1, max_tasks_count)
       end
     end
 
