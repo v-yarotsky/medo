@@ -2,8 +2,11 @@ Simple console app for managing todos on the fly :)
 
 The Changelog:
 
+== v0.0.9 ==== 05.06.2012 ==
+* Make notes fit the terminal
+
 == v0.0.8 ==== 05.06.2012 ==
-* Try to make output fit terminl
+* Try to make output fit terminal
 
 == v0.0.7 ==== 04.06.2012 ==
 * Temporarily use bundled fork of GLI

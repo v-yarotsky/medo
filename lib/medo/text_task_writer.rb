@@ -50,20 +50,9 @@ module Medo
         @task = task
       end
 
-      def description(length = nil)
+      def description(length = nil, options = {})
         if length
-          words = @task.description.split
-
-          words.each_with_object(0).each_with_object([]) do |(w, current_line), lines|
-            line = lines[current_line].to_s
-            if (line + w).length > length
-              current_line += 1
-              redo
-            else
-              (line << " #{w}").lstrip!
-            end
-            lines[current_line] = line
-          end
+          break_line_to_fit(@task.description, length, options)
         else
           @task.description
         end
@@ -78,11 +67,14 @@ module Medo
         end
       end
 
-      def notes
+      def notes(length = nil, options = {})
         return "" if @task.notes.empty?
-        @task.notes.any?
         "\n\n" + @task.notes.map do |n|
-          n.rjust(n.length + done.length + 1)
+          if length
+            break_line_to_fit(n, length, options)
+          else
+            n.rjust(n.length + done.length + 1)
+          end
         end.join("\n")
       end
       
@@ -93,15 +85,46 @@ module Medo
       def to_s(length = nil)
         if length
           description_length = length - done.length - time.length - 2
-          desc = description(description_length)
-          desc.map! do |line|
-            line.ljust(description_length).rjust(done.length + 1 + description_length) 
-          end
-          desc.first.lstrip!
-          "#{done} #{desc.join("\n")} #{time}#{notes}"
+          description_padding = done.length + 1
+          formatted_description = description(description_length, :left_padding => description_padding)
+
+          notes_length = length - done.length - 1
+          notes_first_line_padding = done.length + 1
+          notes_padding = notes_first_line_padding + 2
+          formatted_notes = notes(notes_length, :first_line_padding => notes_first_line_padding, :left_padding => notes_padding)
+
+          "#{done} #{formatted_description} #{time}#{formatted_notes}"
         else
           "#{done} #{description} #{time}#{notes}"
         end
+      end
+
+      private
+
+      def break_line_to_fit(str, length, options = {})
+        first_line_padding = options[:first_line_padding]
+        left_padding       = options[:left_padding]
+        padding_diff       = (left_padding - first_line_padding) if first_line_padding && left_padding
+        available_length   = length - padding_diff.to_i
+        words              = str.split
+        current_line       = 0
+
+        lines = words.each_with_object([]) do |w, lines|
+          line = lines[current_line].to_s
+          if (line + " #{w}").length > available_length
+            current_line += 1
+            redo
+          else
+            line << " #{w}"
+          end
+          lines[current_line] = line.lstrip
+        end
+
+        lines.map! do |line|
+          line.ljust(available_length).rjust(available_length + left_padding.to_i) 
+        end
+        lines[0] = lines.first.strip.ljust(length).rjust(length + first_line_padding.to_i)
+        lines.join("\n")
       end
     end
 

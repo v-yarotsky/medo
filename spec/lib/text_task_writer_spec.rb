@@ -40,8 +40,8 @@ describe TextTaskWriter do
       fake_output.string.should == <<-TXT
 [+] Buy Butter [16:30]
 
-    Note 1
-    Note 2
+    Note 1            
+    Note 2            
       TXT
     end
 
@@ -55,12 +55,12 @@ describe TextTaskWriter do
 ----------------------
 [+] Buy Butter [16:30]
 
-    Note 1
-    Note 2
+    Note 1            
+    Note 2            
       TXT
     end
 
-    it "should take terminal size into account" do
+    it "should wrap task desriptions to fit terminal width" do
       Terminal.stub(:instance => stub(:size => [20, 40])) #cols, lines
       
       task_writer.add_task(pending_task)
@@ -73,8 +73,24 @@ describe TextTaskWriter do
 [+] Buy     
     Butter   [16:30]
 
-    Note 1
-    Note 2
+    Note 1          
+    Note 2          
+      TXT
+    end
+
+    it "should wrap notes to fit terminal width" do
+      Terminal.stub(:instance => stub(:size => [20, 40])) #cols, lines
+      
+      task_writer.add_task(pending_task)
+      pending_task.stub(:notes => ["Note 1 is too long to fit the terminal"])
+      task_writer.write
+
+      fake_output.string.should == <<-TXT
+[ ] Buy Milk (12:04)
+
+    Note 1 is too   
+      long to fit   
+      the terminal  
       TXT
     end
   end

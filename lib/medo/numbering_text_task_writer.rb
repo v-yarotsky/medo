@@ -18,12 +18,6 @@ module Medo
         @number_length = count.to_s.size
       end
 
-      def notes
-        "\n" + @task.notes.map do |n|
-          n.rjust(n.length + done.length + 1)
-        end.join("\n")
-      end
-
       def number
         format = "%-#{@number_length + 1}s"
         format % (@task.done? ? "" : "#@number.")
