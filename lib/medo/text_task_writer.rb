@@ -75,7 +75,7 @@ module Medo
           else
             n.rjust(n.length + done.length + 1)
           end
-        end.join("\n")
+        end.join("\n") + "\n\n"
       end
       
       def done
@@ -106,23 +106,13 @@ module Medo
         left_padding       = options[:left_padding]
         padding_diff       = (left_padding - first_line_padding) if first_line_padding && left_padding
         available_length   = length - padding_diff.to_i
-        words              = str.split
-        current_line       = 0
 
-        lines = words.each_with_object([]) do |w, lines|
-          line = lines[current_line].to_s
-          if (line + " #{w}").length > available_length
-            current_line += 1
-            redo
-          else
-            line << " #{w}"
-          end
-          lines[current_line] = line.lstrip
-        end
+        lines = str.gsub(/(.{1,#{available_length}})(?:\s+|\Z)|(.{1,#{available_length}})/m, "\\1\\2\n").split("\n")
 
         lines.map! do |line|
-          line.ljust(available_length).rjust(available_length + left_padding.to_i) 
+          line.strip.ljust(available_length).rjust(available_length + left_padding.to_i) 
         end
+
         lines[0] = lines.first.strip.ljust(length).rjust(length + first_line_padding.to_i)
         lines.join("\n")
       end

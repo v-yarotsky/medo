@@ -2,6 +2,9 @@ Simple console app for managing todos on the fly :)
 
 The Changelog:
 
+== v0.0.10 ==== 06.06.2012 ==
+* Fix bug with wrapping words
+
 == v0.0.9 ==== 05.06.2012 ==
 * Make notes fit the terminal
 

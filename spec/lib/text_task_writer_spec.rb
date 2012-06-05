@@ -42,6 +42,7 @@ describe TextTaskWriter do
 
     Note 1            
     Note 2            
+
       TXT
     end
 
@@ -57,6 +58,7 @@ describe TextTaskWriter do
 
     Note 1            
     Note 2            
+
       TXT
     end
 
@@ -75,6 +77,7 @@ describe TextTaskWriter do
 
     Note 1          
     Note 2          
+
       TXT
     end
 
@@ -91,7 +94,31 @@ describe TextTaskWriter do
     Note 1 is too   
       long to fit   
       the terminal  
+
       TXT
+    end
+
+    it "should pass edge fucking case" do
+      Terminal.stub(:instance => stub(:size => [20, 40])) #cols, lines
+
+      pending_task.stub(:notes => ["this is a very long sentence containing the Honorificabilitudinitatibus word"])
+
+      task_writer.add_task(pending_task)
+      task_writer.write
+
+      fake_output.string.should == <<-TXT
+[ ] Buy Milk (12:04)
+
+    this is a very  
+      long sentence 
+      containing the
+      Honorificabili
+      tudinitatibus 
+      word          
+
+      TXT
+      # s = "this is a very long sentence containing the Honorificabilitudinitatibus word"
+      # w = s.split(/(.{1,20})(?:\s+|\Z|)|(.{1,20})/m).map(&:strip).reject(&:empty?).should == ["this is a very long", "sentence containing", "the Honorificabilitu", "dinitatibus word"]
     end
   end
 end
