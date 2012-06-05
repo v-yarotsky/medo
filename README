@@ -2,6 +2,18 @@ Simple console app for managing todos on the fly :)
 
 The Changelog:
 
+== v0.0.8 ==== 05.06.2012 ==
+* Try to make output fit terminl
+
+== v0.0.7 ==== 04.06.2012 ==
+* Temporarily use bundled fork of GLI
+
+== v0.0.5 ==== 03.06.2012 ==
+* Convert tests to rspec
+
+== v0.0.4 ==== 02.06.2012 ==
+* Get rid of Jeweler
+
 == v0.0.3 ==== 02.06.2012 ==
 * Turn into a gem
 * Store users' todos in ~/.medo-tasks

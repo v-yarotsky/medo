@@ -20,7 +20,7 @@ module Medo
 
       def notes
         "\n" + @task.notes.map do |n|
-          " " * number.size + " " + n
+          n.rjust(n.length + done.length + 1)
         end.join("\n")
       end
 
@@ -30,11 +30,7 @@ module Medo
       end
 
       def done
-        "[#{@task.done? ? '+' : ' '}]"
-      end
-
-      def elements_except_time
-        [number, done, description]
+        "#{number} [#{@task.done? ? '+' : ' '}]"
       end
     end
 
