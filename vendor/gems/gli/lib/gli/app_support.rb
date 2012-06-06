@@ -14,7 +14,7 @@ module GLI
     def reset # :nodoc:
       switches.clear
       flags.clear
-      commands.clear
+      @commands = nil
       @version = nil
       @config_file = nil
       @use_openstruct = false
@@ -44,14 +44,13 @@ module GLI
 
         add_help_switch_if_needed(switches)
 
-        global_options,command,options,arguments = GLIOptionParser.new(commands,flags,switches,accepts).parse_options(args)
+        global_options,command,options,arguments = GLIOptionParser.new(commands,flags,switches,accepts,@default_command).parse_options(args)
 
         copy_options_to_aliased_versions(global_options,command,options)
 
         global_options = convert_to_openstruct_if_needed(global_options)
         options        = convert_to_openstruct_if_needed(options)
 
-        command ||= commands[:help]
         if blk
           blk.call(global_options, command, options, arguments) do
             call_command(command,global_options,options,arguments)
