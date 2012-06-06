@@ -8,6 +8,7 @@ begin
   $:.unshift File.expand_path('../../vendor/gems/gli/lib/', __FILE__)
   require 'gli'
   require 'medo'
+  require 'medo/support'
   require 'medo/file_task_storage'
 rescue LoadError => e #development
   $: << File.expand_path('../../lib', __FILE__)
@@ -17,6 +18,7 @@ end
 
 include GLI::App
 include Medo
+include Medo::Support
 
 program_desc 'Simple CLI To-Do manager'
 version VERSION

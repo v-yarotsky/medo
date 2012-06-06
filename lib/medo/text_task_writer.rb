@@ -129,3 +129,7 @@ module Medo
   end
 end
 
+Dir.glob(File.dirname(__FILE__) + '/text_task_writer/decorators/*_decorator.rb') do |decorator|
+  require decorator
+end
+

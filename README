@@ -2,6 +2,9 @@ Simple console app for managing todos on the fly :)
 
 The Changelog:
 
+== v0.0.12 ==== 06.06.2012 ==
+* Introduce decorators :)
+
 == v0.0.11 ==== 06.06.2012 ==
 * Add colorful output
 
