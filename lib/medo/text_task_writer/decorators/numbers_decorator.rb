@@ -1,8 +1,10 @@
+require 'medo/support/decorator'
+
 module Medo
   class TextTaskWriter
     module Decorators
       module NumbersDecorator
-        extend Decorator
+        extend Support::Decorator
 
         def present_tasks(tasks)
           max_tasks_count = [active_tasks.count, completed_tasks.count].max
@@ -12,7 +14,7 @@ module Medo
         end
 
         module TaskNumbers
-          extend Decorator
+          extend Support::Decorator
 
           after_decorate do |number, total|
             @number        = number

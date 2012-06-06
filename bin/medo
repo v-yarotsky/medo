@@ -18,7 +18,6 @@ end
 
 include GLI::App
 include Medo
-include Medo::Support
 
 program_desc 'Simple CLI To-Do manager'
 version VERSION

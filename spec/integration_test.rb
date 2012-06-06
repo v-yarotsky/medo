@@ -1,11 +1,11 @@
 $: << File.expand_path("../lib", File.dirname(__FILE__))
 
 require 'medo'
+require 'medo/support'
 require 'medo/task'
 require 'medo/text_task_writer'
 require 'medo/binary_task_writer'
 require 'medo/binary_task_reader'
-require 'medo/numbering_text_task_writer'
 
 include Medo
 
@@ -28,7 +28,8 @@ tasks = [
   Task.from_attributes(:description => "Buy Juice", :created_at => fake_clock.now, :done => true, :completed_at => fake_clock.now)
 ]
 
-writer = NumberingTextTaskWriter.new
+writer = TextTaskWriter.new
+TextTaskWriter::Decorators::NumbersDecorator.decorate(writer)
 writer.add_tasks(tasks)
 writer.write
 

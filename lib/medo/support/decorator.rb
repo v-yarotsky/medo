@@ -7,7 +7,7 @@ module Medo
     # Usage:
     #  
     #   module MyDecorator
-    #     extend Decorator
+    #     extend Support::Decorator
     #
     #     after_decorate do |arg1, arg2|
     #       @arg1, @arg2 = arg1, arg2

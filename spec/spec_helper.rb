@@ -6,5 +6,6 @@ require 'rspec/autorun'
 $: << File.expand_path('../lib', File.dirname(__FILE__))
 
 require 'medo'
+require 'medo/support'
 
 include Medo

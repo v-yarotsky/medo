@@ -5,7 +5,7 @@ module Medo
   class TextTaskWriter
     module Decorators
       module ColorsDecorator
-        extend Decorator
+        extend Support::Decorator
 
         private
 
@@ -14,7 +14,7 @@ module Medo
         end
 
         module TaskColors
-          extend Decorator
+          extend Support::Decorator
 
           def to_s(length = nil)
             c = components(length)
