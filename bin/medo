@@ -4,8 +4,6 @@ require 'rubygems'
 require 'fileutils'
 
 begin
-  $:.delete_if { |p| p =~ /gli/ }
-  $:.unshift File.expand_path('../../vendor/gems/gli/lib/', __FILE__)
   require 'gli'
   require 'medo'
   require 'medo/support'
@@ -37,10 +35,12 @@ Signal.trap("SIGINT") do
   exit 1
 end
 
-run(ARGV) do |global_options, command, options, arguments, &cmd|
+around do |global_options, command, options, arguments, cmd|
   FileTaskStorage.using_storage(global_options.fetch(:"tasks-file")) do |the_storage|
     define_singleton_method(:storage) { the_storage }
     cmd.call
   end
 end
+
+run(ARGV)
 

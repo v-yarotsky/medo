@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem 'gli', :path => 'vendor/gems/gli'
+gem 'gli', '>= 2.0.0.rc4'
 gem 'rainbow', '~> 1.1'
 
 group :development, :test do

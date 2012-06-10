@@ -21,10 +21,10 @@ Gem::Specification.new do |s|
   s.specification_version = 3
 
   s.executables = ["medo"]
-  s.files = Dir.glob("{bin,lib,spec,features,vendor}/**/*") + %w[Gemfile Gemfile.lock Rakefile LICENSE.txt README VERSION]
+  s.files = Dir.glob("{bin,lib,spec,features}/**/*") + %w[Gemfile Gemfile.lock Rakefile LICENSE.txt README VERSION]
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency("gli", ">= 2.0.0.rc3")
+  s.add_runtime_dependency("gli", ">= 2.0.0.rc4")
   s.add_runtime_dependency("rainbow", "~> 1.1")
   s.add_development_dependency("rspec", "~> 2.10")
   s.add_development_dependency("rake",  "~> 0.9")
