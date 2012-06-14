@@ -41,6 +41,16 @@ end
 around do |global_options, command, options, arguments, cmd|
   FileTaskStorage.using_storage(global_options.fetch(:"tasks-file")) do |the_storage|
     define_singleton_method(:storage) { the_storage }
+
+    def self.choose_task(argv, tasks)
+      input = argv.shift
+      number = Integer(input) rescue 
+        raise(ArgumentError, "Invalid task #: #{input}")
+      task = tasks.reject(&:done?).sort[number - 1] or raise RuntimeError, 
+        "No such task!"
+      [task, number]
+    end
+
     cmd.call
   end
 end

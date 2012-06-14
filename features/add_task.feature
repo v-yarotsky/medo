@@ -1,6 +1,6 @@
 Feature: Add todo
   In order to be able to keep my in focus
-  as a user
+  As a user
   I want to add tasks to lists
 
   Background:

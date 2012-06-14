@@ -2,9 +2,8 @@ desc "Delete a todo"
 command [:delete, :rm] do |c|
   c.action do |global_options, options, args|
     tasks = storage.read
-    number = args.shift.to_i
 
-    task = tasks.reject(&:done?).sort[number - 1] or raise RuntimeError, "No such task!"
+    task, number = choose_task(args, tasks)
     tasks -= [task]
 
     storage.write(tasks)

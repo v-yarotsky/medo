@@ -4,7 +4,7 @@ command :new do |c|
     tasks = storage.read
 
     task_description = args.join(" ")
-    task = Task.new(task_description)
+    task, number = Task.new(task_description)
 
     tasks << task
 

@@ -3,13 +3,11 @@ command :note do |c|
   c.action do |global_options, options, args|
     tasks = storage.read
 
-    input = args.shift
-    number = Integer(input) rescue 
-      raise(ArgumentError, "Invalid task #: #{input}")
+    task, number = choose_task(args, tasks)
+
     note = args.join(" ").strip
     raise ArgumentError, "No note given" if note.empty?
 
-    task = tasks.reject(&:done?).sort[number - 1] or raise RuntimeError, "No such task!"
     task.notes << note
 
     storage.write(tasks)
