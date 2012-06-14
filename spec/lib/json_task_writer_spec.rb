@@ -1,11 +1,11 @@
-require_relative '../spec_helper'
-require_relative '../support/task_writer_spec_helper'
+require File.expand_path('../../spec_helper', __FILE__)
+require 'support/task_stubs_spec_helper'
 require 'medo/json_task_writer'
 
 include Medo
 
 describe JsonTaskWriter do
-  include TaskWriterSpecHelper
+  include TaskStubsSpecHelper
 
   describe "#write" do
     let(:task_writer) { task_writer = JsonTaskWriter.new(fake_output) }
@@ -16,21 +16,16 @@ describe JsonTaskWriter do
       task_writer.write
       
       JSON.parse(fake_output.string).should == [
-        {
-          "done"         => false,
-          "description"  => "Buy Milk",
-          "created_at"   => "2012-01-05 12:04:00 +0300",
-          "completed_at" => nil,
-          "notes"        => []
-        },
-        {
-          "done"         => true,
-          "description"  => "Buy Butter",
-          "created_at"   => "2012-01-05 15:30:00 +0300",
-          "completed_at" => "2012-01-05 16:30:00 +0300",
-          "notes"        => ["Note 1", "Note 2"]
-        }
+        convert_time(pending_task_attributes),
+        convert_time(completed_task_attributes)
       ]
+    end
+
+    def convert_time(hash)
+      hash.merge!(
+        "created_at" => hash["created_at"].to_s,
+        "completed_at" => (hash["completed_at"].to_s if hash["completed_at"])
+      )
     end
   end
 end

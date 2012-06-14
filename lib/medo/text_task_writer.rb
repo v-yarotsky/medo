@@ -9,6 +9,8 @@ module Medo
     end
 
     def write
+      return puts "There are no tasks left!" if @tasks.empty?
+
       presented_active_tasks    = present_tasks(active_tasks)
       presented_completed_tasks = present_tasks(completed_tasks)
 

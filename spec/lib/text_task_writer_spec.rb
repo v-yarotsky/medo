@@ -1,9 +1,9 @@
-require_relative '../spec_helper'
-require_relative '../support/task_writer_spec_helper'
+require File.expand_path('../../spec_helper', __FILE__)
+require 'support/task_stubs_spec_helper'
 require 'medo/text_task_writer'
 
 describe TextTaskWriter do
-  include TaskWriterSpecHelper
+  include TaskStubsSpecHelper
 
   describe "#write" do
     let(:task_writer) { task_writer = TextTaskWriter.new(fake_output) }
@@ -82,7 +82,7 @@ describe TextTaskWriter do
       TXT
     end
 
-    it "should pass edge fucking case" do
+    it "should wrap very longs words nicely" do
       Terminal.stub(:instance => stub(:size => [20, 40])) #cols, lines
 
       pending_task.stub(:notes => ["this is a very long sentence containing the Honorificabilitudinitatibus word"])
@@ -101,8 +101,6 @@ describe TextTaskWriter do
       word          
 
       TXT
-      # s = "this is a very long sentence containing the Honorificabilitudinitatibus word"
-      # w = s.split(/(.{1,20})(?:\s+|\Z|)|(.{1,20})/m).map(&:strip).reject(&:empty?).should == ["this is a very long", "sentence containing", "the Honorificabilitu", "dinitatibus word"]
     end
   end
 end

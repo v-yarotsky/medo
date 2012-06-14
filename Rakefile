@@ -21,14 +21,9 @@ Rake::TestTask.new do |t|
 end
 
 Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format pretty -x"
+  t.cucumber_opts = "features --tags ~@wip --format pretty -x"
   t.fork = false
 end
 
-desc "Integration test"
-task :integration_test do |t|
-  require File.join(File.dirname(__FILE__), 'spec/integration_test.rb')
-end
-
-task :default => :test
+task :default => [:test, :features]
 
