@@ -4,7 +4,7 @@ Feature: Add todo
   I want to add tasks to lists
 
   Background:
-    Given there's no file "/tmp/medo-test.medo"
+    Given there's no file "/tmp/test-medo-tasks"
 
   Scenario: Add todo
     When I successfully run `medo --tasks-file=/tmp/test-medo-tasks new Hello World`

@@ -8,7 +8,7 @@ ENV['GLI_DEBUG'] = "true"
 
 After do
   if defined? @tasks_file_path and File.exist?(@tasks_file_path)
-    # FileUtils.rm(@tasks_file_path)
+    FileUtils.rm(@tasks_file_path)
   end
 end
 
