@@ -7,7 +7,7 @@ module TaskStubsSpecHelper
       let(:pending_task_attributes) do
         {
           "description"  => "Buy Milk",
-          "created_at"   => Time.parse("2012-01-05 12:04:00 +0300"),
+          "created_at"   => Time.parse("2012-01-05 12:04:00"),
           "completed_at" => nil,
           "done"         => false,
           "notes"        => []
@@ -17,8 +17,8 @@ module TaskStubsSpecHelper
       let(:completed_task_attributes) do
         {
           "description"  => "Buy Butter",
-          "created_at"   => Time.parse("2012-01-05 15:30:00 +0300"),
-          "completed_at" => Time.parse("2012-01-05 16:30:00 +0300"),
+          "created_at"   => Time.parse("2012-01-05 15:30:00"),
+          "completed_at" => Time.parse("2012-01-05 16:30:00"),
           "done"         => true,
           "notes"        => ["Note 1", "Note 2"]
         }
