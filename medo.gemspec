@@ -8,6 +8,11 @@ require 'date'
 Gem::Specification.new do |s|
   s.name = "medo"
   s.summary = "Simple CLI todo manager app"
+  s.description = <<-TXT
+The 'medo' application allows you to keep track of your
+tasks (basically a to-do app) through command line interface
+  TXT
+
   s.version = Medo::VERSION.dup
 
   s.authors = ["Vladimir Yarotsky"]
