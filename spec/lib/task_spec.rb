@@ -72,11 +72,11 @@ describe Task do
     it "should allow all attributes to be set from hash" do
       created_at   = Time.now
       completed_at = Time.now
-      task = Task.from_attributes(:description  => "d", 
-                                  :notes        => ["n"], 
-                                  :done         => true, 
-                                  :completed_at => completed_at, 
-                                  :created_at   => created_at)
+      task = Task.from_attributes("description"  => "d", 
+                                  "notes"        => ["n"], 
+                                  "done"         => true, 
+                                  "completed_at" => completed_at, 
+                                  "created_at"   => created_at)
       task.description.should  ==  "d"
       task.notes.should        ==  ["n"]
       task.completed_at.should ==  completed_at
@@ -86,9 +86,9 @@ describe Task do
 
     it "should require description, created_at, and completed at if done set to true" do
       proc { Task.from_attributes({}) }.should raise_error(ArgumentError, "No description given!")
-      proc { Task.from_attributes(:description => " ") }.should raise_error(ArgumentError, "No description given!")
-      proc { Task.from_attributes(:description => "asdf") }.should raise_error(ArgumentError, "Missing created_at")
-      proc { Task.from_attributes(:description => "a", :created_at => Time.now, :done => true) }.should raise_error(ArgumentError, "Missing completed_at")
+      proc { Task.from_attributes("description" => " ") }.should raise_error(ArgumentError, "No description given!")
+      proc { Task.from_attributes("description" => "asdf") }.should raise_error(ArgumentError, "Missing created_at")
+      proc { Task.from_attributes("description" => "a", "created_at" => Time.now, "done" => true) }.should raise_error(ArgumentError, "Missing completed_at")
     end
   end
 

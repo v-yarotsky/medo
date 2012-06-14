@@ -8,11 +8,11 @@ module Medo
       attr_accessor :clock
 
       def from_attributes(attributes)
-        task = Task.new(attributes.delete(:description), attributes)
+        task = Task.new(attributes.delete("description"), attributes)
         task.instance_eval do
-          @created_at = attributes[:created_at] or raise ArgumentError, "Missing created_at"
-          @done = attributes[:done]
-          @completed_at = attributes[:completed_at] or raise ArgumentError, "Missing completed_at" if @done
+          @created_at = attributes["created_at"] or raise ArgumentError, "Missing created_at"
+          @done = attributes["done"]
+          @completed_at = attributes["completed_at"] or raise ArgumentError, "Missing completed_at" if @done
         end
         task
       end
@@ -24,7 +24,7 @@ module Medo
       raise ArgumentError, "No description given!" if @description.empty?
       @created_at   = clock.now
       @completed_at = nil
-      @notes        = parse_notes(options[:notes])
+      @notes        = parse_notes(options["notes"] || options[:notes])
     end
 
     def <=>(other)

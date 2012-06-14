@@ -9,8 +9,11 @@ begin
   require 'medo/support'
   require 'medo/file_task_storage'
 rescue LoadError => e #development
-  $: << File.expand_path('../../lib', __FILE__)
-  require 'bundler/setup'
+  raise if $loaded
+  $:.unshift File.expand_path('../../lib', __FILE__) #load what we work on, even if gem installed
+  require 'bundler'
+  Bundler.setup(:default)
+  $loaded = true
   retry
 end
 

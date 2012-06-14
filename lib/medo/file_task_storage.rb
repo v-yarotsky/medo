@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'tempfile'
-require 'medo/binary_task_reader'
-require 'medo/binary_task_writer'
+require 'medo/json_task_reader'
+require 'medo/json_task_writer'
 
 module Medo
   class FileTaskStorage
@@ -12,7 +12,7 @@ module Medo
       storage.dispose if storage
     end
 
-    def initialize(filename, reader_class = BinaryTaskReader, writer_class = BinaryTaskWriter)
+    def initialize(filename, reader_class = JsonTaskReader, writer_class = JsonTaskWriter)
       @filename, @reader_class, @writer_class = filename, reader_class, writer_class
       FileUtils.touch(@filename)
     end

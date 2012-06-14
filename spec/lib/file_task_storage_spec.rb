@@ -23,13 +23,19 @@ describe FileTaskStorage do
   end
 
   describe "#write" do
+    class StubWriter
+      def initialize(t); @t = t; end
+      def write; @t.write "foo"; end
+      def add_tasks(t); end
+    end
+
     it "should write to tempfile only" do
-      storage = FileTaskStorage.new("f")
+      storage = FileTaskStorage.new("f", anything, StubWriter)
       tempfile = mock
       storage.stub(:tempfile => tempfile)
-      tempfile.should_receive(:write).with(Marshal.dump([]))
+      tempfile.should_receive(:write).with("foo")
       tempfile.should_receive(:close)
-      storage.write([])
+      storage.write(anything)
     end
 
     it "should close tempfile if error occured" do
