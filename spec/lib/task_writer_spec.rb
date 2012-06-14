@@ -11,8 +11,8 @@ describe TaskWriter do
     end
   end
 
-  it "should respond to #write" do
-    TaskWriter.new.should respond_to(:write)
+  specify "#write should be abstract" do
+    expect { TaskWriter.new.write }.to raise_error NotImplementedError
   end
 end
 

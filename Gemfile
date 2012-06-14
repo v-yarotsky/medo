@@ -1,4 +1,12 @@
 source "http://rubygems.org"
 
-gemspec
+gem "gli", ">= 2.0.0.rc4"
+gem "rainbow", "~> 1.1"
+
+group :development do
+  gem "rspec", "~> 2.10"
+  gem "rake",  "~> 0.9"
+  gem "aruba", "~> 0.4"
+  gem "simplecov", "~> 0.6", :require => false
+end
 
