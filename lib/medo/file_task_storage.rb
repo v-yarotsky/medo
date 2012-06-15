@@ -46,7 +46,7 @@ module Medo
     private
 
     def tempfile
-      @tempfile ||= Tempfile.new(File.basename(@filename), :binmode => true)
+      @tempfile ||= Tempfile.new(File.basename(@filename))
     end
   end
 end

@@ -40,7 +40,10 @@ end
 
 around do |global_options, command, options, arguments, cmd|
   FileTaskStorage.using_storage(global_options.fetch(:"tasks-file")) do |the_storage|
-    define_singleton_method(:storage) { the_storage }
+    instance_eval do
+      eigen = class << self; self; end
+      eigen.send(:define_method, :storage) { the_storage }
+    end
 
     def self.choose_task(argv, tasks)
       input = argv.shift
