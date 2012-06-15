@@ -6,6 +6,9 @@ Simple console app for managing todos on the fly :)
 
 ## The Changelog ##
 
+### v0.1.1 (15.06.2012) ###
+* Add support for ree-1.8.7
+
 ### v0.1.0 (15.06.2012) ###
 * Store tasks in JSON
 * Add the 'show' command
