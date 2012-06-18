@@ -1,13 +1,12 @@
 desc "Delete a todo"
 command [:delete, :rm] do |c|
+  c.desc "Number of the task to delete"
+  c.flag [:n, :number]
+  c.default_value 1
+
   c.action do |global_options, options, args|
-    tasks = storage.read
-
-    task, number = choose_task(args, tasks)
-    tasks -= [task]
-
-    storage.write(tasks)
-    storage.commit
+    task, number = choose_task
+    committing_tasks { tasks.delete(task) }
     puts "Task #{number} removed"
   end
 end

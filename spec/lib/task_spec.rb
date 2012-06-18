@@ -68,6 +68,13 @@ describe Medo::Task do
     task.should be_done
   end
 
+  it "should reset done state if #reset called" do
+    task = Medo::Task.new("Buy milk")
+    task.done
+    task.reset
+    task.should_not be_done
+  end
+
   describe ".from_attributes" do
     it "should allow all attributes to be set from hash" do
       created_at   = Time.now

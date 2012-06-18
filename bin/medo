@@ -1,62 +1,13 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'fileutils'
-
-begin
-  require 'gli'
-  require 'medo'
-  require 'medo/support'
-  require 'medo/file_task_storage'
-rescue LoadError => e #development
-  raise if $loaded
-  $:.unshift File.expand_path('../../lib', __FILE__) #load what we work on, even if gem installed
-  require 'bundler'
-  Bundler.setup(:default)
-  $loaded = true
-  retry
-end
-
-include GLI::App
-include Medo
-
-program_desc 'Simple CLI To-Do manager'
-version VERSION
-
-commands_from 'medo/commands'
-
-default_command :list
-
-desc "A file with tasks"
-flag [:f, "tasks-file"], :default_value => File.join(ENV['HOME'], '.medo-tasks')
-
-desc "Do not use colorful output"
-switch "no-color", :negatable => false
+require 'medo/cli'
 
 Signal.trap("SIGINT") do
   puts "Terminating"
   exit 1
 end
 
-around do |global_options, command, options, arguments, cmd|
-  FileTaskStorage.using_storage(global_options.fetch(:"tasks-file")) do |the_storage|
-    instance_eval do
-      eigen = class << self; self; end
-      eigen.send(:define_method, :storage) { the_storage }
-    end
-
-    def self.choose_task(argv, tasks)
-      input = argv.shift
-      number = Integer(input) rescue 
-        raise(ArgumentError, "Invalid task #: #{input}")
-      task = tasks.reject(&:done?).sort[number - 1] or raise RuntimeError, 
-        "No such task!"
-      [task, number]
-    end
-
-    cmd.call
-  end
-end
-
-run(ARGV)
+app = Medo::CLI
+app.run(ARGV)
 

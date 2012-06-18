@@ -6,24 +6,34 @@ module Medo
       module NumbersDecorator
         extend Support::Decorator
 
+        after_decorate do |options|
+          @num_options = options
+        end
+
         def present_tasks(tasks)
           max_tasks_count = [active_tasks.count, completed_tasks.count].max
           super.each_with_index.map do |t, i|
-            TaskNumbers.decorate(t, i + 1, max_tasks_count)
+            TaskNumbers.decorate(t, i + 1, max_tasks_count, @num_options)
           end
         end
 
         module TaskNumbers
           extend Support::Decorator
 
-          after_decorate do |number, total|
+          after_decorate do |number, total, options|
             @number        = number
             @number_length = total.to_s.size
+            @num_options   = options || {}
           end
 
           def number
             format = "%-#{@number_length + 1}s"
-            format % (@task.done? ? "" : "#@number.")
+            format % (number? ? "" : "#@number.")
+          end
+
+          def number?
+            @num_options[:done] && @task.done? ||
+              @num_options[:pending] && !@task.done?
           end
 
           def done

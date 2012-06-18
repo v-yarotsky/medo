@@ -1,3 +1,5 @@
+require 'medo/task'
+
 module Medo
   class TaskReader
     def read

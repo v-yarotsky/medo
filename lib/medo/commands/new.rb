@@ -1,15 +1,12 @@
 desc "Create a todo"
 command :new do |c|
+  c.desc "Use EDITOR"
+  c.switch [:e, :editor]
+
   c.action do |global_options, options, args|
-    tasks = storage.read
-
-    task_description = args.join(" ")
+    task_description = get_input
     task, number = Task.new(task_description)
-
-    tasks << task
-
-    storage.write(tasks)
-    storage.commit
+    committing_tasks { tasks << task }
     puts "Task added"
   end
 end

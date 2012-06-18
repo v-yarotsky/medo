@@ -1,17 +1,17 @@
 desc "Add note to a todo"
 command :note do |c|
+  c.desc "Number of the task to add note to"
+  c.flag [:n, :number]
+  c.default_value 1
+
+  c.desc "Use EDITOR"
+  c.switch [:e, :editor]
+
   c.action do |global_options, options, args|
-    tasks = storage.read
-
-    task, number = choose_task(args, tasks)
-
-    note = args.join(" ").strip
+    task, number = choose_task
+    note = get_input
     raise ArgumentError, "No note given" if note.empty?
-
-    task.notes << note
-
-    storage.write(tasks)
-    storage.commit
+    committing_tasks { task.notes << note }
     puts "Note for task #{number} added"
   end
 end

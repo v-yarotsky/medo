@@ -45,6 +45,11 @@ module Medo
       @done         = true
     end
 
+    def reset
+      @completed_at = nil
+      @done         = false
+    end
+
     def done?
       !!@done
     end
