@@ -1,3 +1,5 @@
+require 'medo/notes'
+
 module Medo
   class Task
     include Comparable
@@ -24,7 +26,7 @@ module Medo
       raise ArgumentError, "No description given!" if @description.empty?
       @created_at   = clock.now
       @completed_at = nil
-      @notes        = parse_notes(options["notes"] || options[:notes])
+      @notes        = Notes.new(options["notes"] || options[:notes])
     end
 
     def <=>(other)
@@ -38,6 +40,24 @@ module Medo
       when [true, false]  then -1
       when [false, true]  then 1
       end
+    end
+
+    def ==(other)
+      return true if other.equal? self
+      return false unless other.kind_of?(self.class)
+      self.description    == other.description &&
+        self.created_at   == other.created_at &&
+        self.done?        == other.done? &&
+        self.completed_at == other.completed_at &&
+        self.notes        == other.notes
+    end
+
+    def initialize_copy(source)
+      super
+      @description  = @description.dup
+      @created_at   = @created_at.dup
+      @completed_at = @completed_at.dup if @completed_at
+      @notes        = @notes.dup
     end
 
     def done
@@ -58,10 +78,6 @@ module Medo
 
     def clock
       self.class.clock
-    end
-
-    def parse_notes(notes)
-      Array(notes).map { |n| n.to_s.strip }.reject(&:empty?)
     end
   end
 end

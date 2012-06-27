@@ -11,10 +11,12 @@ describe Medo::Task do
     proc { Medo::Task.new(" ") }.should raise_error(ArgumentError)
   end
 
+  class Notes; end
+
   it "should allow notes to be set upon creation" do
-    Medo::Task.new("description", :notes => ["1", "2"]).notes.should ==  ["1", "2"]
-    Medo::Task.new("description", :notes => 0).notes.should          ==  ["0"]
-    Medo::Task.new("description", :notes => [0, nil]).notes.should   ==  ["0"]
+    args = anything
+    Notes.should_receive(:new).with(args)
+    Medo::Task.new("description", :notes => ["1", "2"])
   end
 
   it "should assign creation time upon instantiation" do
@@ -22,12 +24,6 @@ describe Medo::Task do
     using_fake_clock(fake_clock) do
       Medo::Task.new("description").created_at.should == fake_clock.now
     end
-  end
-
-  it "should allow assigning notes to the task" do
-    task = Medo::Task.new("description")
-    task.notes << "My Note"
-    task.notes.should include("My Note")
   end
 
   it "should not allow comparison with shit" do
@@ -80,12 +76,12 @@ describe Medo::Task do
       created_at   = Time.now
       completed_at = Time.now
       task = Medo::Task.from_attributes("description"  => "d", 
-                                        "notes"        => ["n"], 
+                                        "notes"        => "n", 
                                         "done"         => true, 
                                         "completed_at" => completed_at, 
                                         "created_at"   => created_at)
       task.description.should  ==  "d"
-      task.notes.should        ==  ["n"]
+      task.notes.should        ==  "n"
       task.completed_at.should ==  completed_at
       task.created_at.should   ==  created_at
       task.should be_done
@@ -97,6 +93,22 @@ describe Medo::Task do
       proc { Medo::Task.from_attributes("description" => "asdf") }.should raise_error(ArgumentError, "Missing created_at")
       proc { Medo::Task.from_attributes("description" => "a", "created_at" => Time.now, "done" => true) }.should raise_error(ArgumentError, "Missing completed_at")
     end
+  end
+
+  it "should not be equal if notes differs" do
+    c = Time.now
+    t1 = Medo::Task.from_attributes("description" => "d", "created_at" => c, "notes" => "foo")
+    t2 = Medo::Task.from_attributes("description" => "d", "created_at" => c, "notes" => "foo")
+    t1.should == t2
+    t1.notes << "bar"
+    t1.should_not == t2
+  end
+
+  it "should duplicate with children" do
+    t1 = Medo::Task.new("description", "notes" => "my note")
+    t2 = t1.dup
+    t1.description.should_not equal(t2.description)
+    t1.notes.should_not equal(t2.notes)
   end
 
   def using_fake_clock(fake_clock)
