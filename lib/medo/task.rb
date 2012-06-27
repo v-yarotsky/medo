@@ -22,11 +22,10 @@ module Medo
     self.clock = Time
 
     def initialize(description, options = {})
-      @description  = description.to_s.strip
-      raise ArgumentError, "No description given!" if @description.empty?
+      self.description = description
       @created_at   = clock.now
       @completed_at = nil
-      @notes        = Notes.new(options["notes"] || options[:notes])
+      self.notes    = options["notes"] || options[:notes]
     end
 
     def <=>(other)
@@ -58,6 +57,16 @@ module Medo
       @created_at   = @created_at.dup
       @completed_at = @completed_at.dup if @completed_at
       @notes        = @notes.dup
+    end
+
+    def description=(desc)
+      description = desc.to_s.strip
+      raise ArgumentError, "No description given!" if description.empty?
+      @description  = description
+    end
+
+    def notes=(*args)
+      @notes = Notes.new(*args)
     end
 
     def done

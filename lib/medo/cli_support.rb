@@ -39,9 +39,20 @@ module Medo
     end
 
     def get_input
+      process_input
+    end
+
+    def edit_input(value)
+      process_input do |path|
+        File.open(path, "w") { |f| f.write(value) }
+      end
+    end
+
+    def process_input
       result = nil
       if options[:editor]
         path = File.join(Dir::Tmpname.tmpdir, "taketo-input-#{Time.now.to_i}")
+        yield path if block_given?
         status = system("$EDITOR #{path}")
         if status && File.exists?(path)
           result = File.read(path)

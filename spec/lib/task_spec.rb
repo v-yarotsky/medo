@@ -6,13 +6,7 @@ describe Medo::Task do
     Medo::Task.new("description").description.should == "description"
   end
 
-  it "should require description to be set" do
-    proc { Medo::Task.new("")  }.should raise_error(ArgumentError)
-    proc { Medo::Task.new(" ") }.should raise_error(ArgumentError)
-  end
-
-  class Notes; end
-
+  Notes = Class.new unless defined? Notes
   it "should allow notes to be set upon creation" do
     args = anything
     Notes.should_receive(:new).with(args)
@@ -109,6 +103,28 @@ describe Medo::Task do
     t2 = t1.dup
     t1.description.should_not equal(t2.description)
     t1.notes.should_not equal(t2.notes)
+  end
+
+  context "#description=" do
+    let(:task) { Medo::Task.new("description") }
+
+    it "should allow settings description" do
+      task.description = "foo"
+      task.description.should == "foo"
+    end
+
+    it "should raise if description is bad" do
+      expect do
+        task.description = nil
+      end.to raise_error ArgumentError
+    end
+  end
+
+  Notes = Class.new unless defined? Notes
+  it "should create a Notes instance on #notes=" do
+    t = Medo::Task.new("foo")
+    Notes.should_receive(:new).with("bar")
+    t.notes = "bar"
   end
 
   def using_fake_clock(fake_clock)

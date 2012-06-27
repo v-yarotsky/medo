@@ -1,5 +1,5 @@
 Feature: Add todo
-  In order to be able to keep my in focus
+  In order to be able to keep myself focused
   As a user
   I want to add tasks to lists
 
