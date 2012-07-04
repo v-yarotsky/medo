@@ -4,6 +4,9 @@ command :reset do |c|
   c.flag [:n, :number]
   c.default_value 1
 
+  c.desc "Select task interactively"
+  c.switch [:interactive, :i]
+
   c.action do |global_options, options, args|
     task, number = choose_task(:done => true)
     committing_tasks { task.reset }
