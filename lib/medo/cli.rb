@@ -26,6 +26,9 @@ module Medo
     desc "Do not use colorful output"
     switch "no-color", :negatable => false
 
+    desc "Use interactive mode"
+    switch [:interactive, :i]
+
     around do |global_options, command, options, arguments, cmd|
       FileTaskStorage.using_storage(global_options.fetch(:"tasks-file")) do |storage|
         instance_eval do

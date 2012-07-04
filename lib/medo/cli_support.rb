@@ -30,12 +30,32 @@ module Medo
       yield unless global_options[:"no-color"] == false
     end
 
+    def interactive?
+      !!global_options[:interactive]
+    end
+
     def choose_task(select_options = {})
+      task_number = interactive? ? ask_for_task
+                                 : parse_task_number
+      task = get_task(task_number, select_options)
+      [task, task_number]
+    end
+
+    def parse_task_number
       task_number = Integer(options[:number] || 1) rescue
         raise(ArgumentError, "Invalid task #: #{task_number}")
-      task = tasks.reject { |t| select_options[:done] ^ t.done? }.sort[task_number - 1] or
-        raise(RuntimeError, "No such task!")
-      [task, task_number]
+    end
+
+    def ask_for_task
+      list_command = commands.detect { |c| c.first == :list }.last
+      list_command.execute(global_options, options, arguments)
+      puts "Enter task number:"
+      task_number = begin
+        input = STDIN.gets.chomp
+        Integer(input)
+      rescue
+        raise(ArgumentError, "Invalid task #: #{input.inspect}")
+      end
     end
 
     def get_input
@@ -62,6 +82,13 @@ module Medo
         result = arguments.join(" ").strip
       end
       result.to_s
+    end
+
+    private
+
+    def get_task(task_number, select_options = {})
+      tasks.reject { |t| select_options[:done] ^ t.done? }.sort[task_number - 1] or
+        raise(RuntimeError, "No such task!")
     end
   end
 end
