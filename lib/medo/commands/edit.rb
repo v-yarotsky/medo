@@ -1,5 +1,5 @@
 desc "Edit a todo"
-command :edit do |c|
+command [:edit, :e] do |c|
   c.desc "Use EDITOR"
   c.switch [:e, :editor]
 

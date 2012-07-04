@@ -1,5 +1,5 @@
 desc "Create a todo"
-command :new do |c|
+command [:new, :n] do |c|
   c.desc "Use EDITOR"
   c.switch [:e, :editor]
 

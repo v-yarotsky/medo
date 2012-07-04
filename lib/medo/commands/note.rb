@@ -7,6 +7,7 @@ command :note do |c|
   c.desc "Use EDITOR"
   c.switch [:e, :editor]
 
+  c.desc "Add a note to the task"
   c.command :add do |ca|
     ca.action do |global_options, options, args|
       task, number = choose_task
@@ -17,6 +18,7 @@ command :note do |c|
     end
   end
 
+  c.desc "Edit the note for the task"
   c.command :edit do |ce|
     ce.action do |global_options, options, args|
       task, number = choose_task

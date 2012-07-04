@@ -1,5 +1,5 @@
 desc "Mark todo as done"
-command :done do |c|
+command [:done, :d] do |c|
   c.desc "Number of the task to mark as done"
   c.flag [:n, :number]
   c.default_value 1
