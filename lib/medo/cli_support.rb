@@ -35,8 +35,7 @@ module Medo
     end
 
     def choose_task(select_options = {})
-      task_number = interactive? ? ask_for_task
-                                 : parse_task_number
+      task_number = interactive? ? ask_for_task : parse_task_number
       task = get_task(task_number, select_options)
       [task, task_number]
     end
