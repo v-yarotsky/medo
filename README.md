@@ -3,6 +3,7 @@
 Simple console app for managing todos on the fly :)
 
 [![Build Status](https://secure.travis-ci.org/v-yarotsky/medo.png)](http://travis-ci.org/v-yarotsky/medo)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/v-yarotsky/medo)
 
 ## The Changelog ##
 
