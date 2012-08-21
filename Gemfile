@@ -5,7 +5,7 @@ gem "rainbow", "~> 1.1"
 gem "json", "~> 1.7"
 
 group :development do
-  gem "rspec", "~> 2.10"
+  gem "rspec", "~> 2.11"
   gem "rake",  "~> 0.9"
   gem "aruba", "~> 0.4"
   gem "simplecov", "~> 0.6", :require => false

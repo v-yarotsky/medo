@@ -32,7 +32,7 @@ tasks (basically a to-do app) through command line interface
   s.add_runtime_dependency("gli", ">= 2.0.0.rc4")
   s.add_runtime_dependency("rainbow", "~> 1.1")
   s.add_runtime_dependency("json", "~> 1.7")
-  s.add_development_dependency("rspec", "~> 2.10")
+  s.add_development_dependency("rspec", "~> 2.11")
   s.add_development_dependency("rake",  "~> 0.9")
   s.add_development_dependency("aruba", "~> 0.4")
   s.add_development_dependency("simplecov", "~> 0.6")

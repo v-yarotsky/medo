@@ -16,9 +16,18 @@ module Medo
         module TaskColors
           extend Support::Decorator
 
-          def to_s(length = nil)
-            c = components(length)
-            "#{c.done.color(:red)} #{c.description.color(:black)} #{c.time.color(:yellow)}#{c.notes}"
+          def description
+            str = super.lstrip
+            preserve_size(str, str.bright)
+          end
+
+          private
+
+          def preserve_size(str, colored_str)
+            colored_str.instance_eval <<-RUBY
+              def size; #{str.size}; end
+            RUBY
+            colored_str
           end
         end
       end

@@ -7,10 +7,11 @@ command [:list, :ls] do |c|
 
   c.action do |global_options, options, args|
     include TextTaskWriter::Decorators
-    writer = NumbersDecorator.decorate(TextTaskWriter.new,
+    puts("no tasks") && break if tasks.empty?
+    m_tasks = TextTaskWriter::TasksCollection.new(tasks)
+    writer = NumbersDecorator.decorate(TextTaskWriter.new(m_tasks),
       :done => options[:"number-done"] == false)
     colorize { ColorsDecorator.decorate(writer) }
-    writer.add_tasks(tasks)
     writer.write
   end
 end

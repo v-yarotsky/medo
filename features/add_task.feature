@@ -8,5 +8,4 @@ Feature: Add todo
 
   Scenario: Add todo
     When I successfully run `medo --tasks-file=/tmp/test-medo-tasks new Hello World`
-    And I successfully run `medo --tasks-file=/tmp/test-medo-tasks ls`
-    Then the output should contain "Hello World"
+    Then the output should contain "Task added"

@@ -11,7 +11,7 @@ module Medo
         end
 
         def present_tasks(tasks)
-          max_tasks_count = [active_tasks.count, completed_tasks.count].max
+          max_tasks_count = [@tasks.active.count, @tasks.completed.count].max
           super.each_with_index.map do |t, i|
             TaskNumbers.decorate(t, i + 1, max_tasks_count, @num_options)
           end
@@ -36,7 +36,11 @@ module Medo
               @num_options[:pending] && !@task.done?
           end
 
-          def done
+          def padding
+            super + number.length + 1
+          end
+
+          def to_s
             "#{number} #{super}"
           end
         end

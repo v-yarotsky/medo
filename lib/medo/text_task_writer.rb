@@ -3,131 +3,109 @@ require 'medo/terminal'
 
 module Medo
   class TextTaskWriter < TaskWriter
-    def initialize(output_stream = STDOUT)
+    class TasksCollection
+      include Enumerable
+
+      def initialize(tasks)
+        @tasks = tasks
+      end
+
+      def each
+        @tasks.each { |t| yield t }
+      end
+
+      def active
+        @tasks.reject(&:done?).sort_by { |t| t.completed_at }.reverse
+      end
+
+      def completed
+        @tasks.select(&:done?).sort_by { |t| t.created_at }.reverse
+      end
+
+      def <<(task)
+        @tasks << task
+        self
+      end
+    end
+
+    def initialize(tasks, output_stream = STDOUT)
       super()
+      @tasks = tasks
       @output_stream = output_stream
     end
 
     def write
-      return puts "There are no tasks left!" if @tasks.empty?
+      presented_active_tasks    = present_tasks(@tasks.active)
+      presented_completed_tasks = present_tasks(@tasks.completed)
 
-      presented_active_tasks    = present_tasks(active_tasks)
-      presented_completed_tasks = present_tasks(completed_tasks)
-
-      max_task_length = (presented_active_tasks + presented_completed_tasks).map do |t| 
-        t.to_s.split("\n").map(&:size).max
-      end.max
-
-      max_output_width = [Terminal.instance.size.first, max_task_length].min
-    
       presented_active_tasks.each do |t|
-        @output_stream.puts t.to_s(max_output_width)
+        @output_stream.puts t.to_s
       end
 
       if presented_active_tasks.any? and presented_completed_tasks.any?
-        @output_stream.puts "-" * max_output_width
+        @output_stream.puts "-" * (presented_active_tasks + presented_completed_tasks).map(&:to_s).join("\n").each_line.max_by(&:size).chomp.size
       end
 
       presented_completed_tasks.each do |t|
-        @output_stream.puts t.to_s(max_output_width)
+        @output_stream.puts t.to_s
       end
     end
 
     private
 
-    def active_tasks
-      @tasks.reject(&:done?).sort
-    end
-
-    def completed_tasks
-      @tasks.select(&:done?).sort
-    end
-
     def present_tasks(tasks)
-      tasks.map { |t| TaskPresenter.new(t) }
+      tasks.map { |t| WrappingTaskPresenter.new(t, Terminal.instance.size.first) }
     end
 
-    class TaskPresenter
-
-      class Components < Struct.new(:done, :description, :time, :notes); end
-
-      def initialize(task)
+    class WrappingTaskPresenter
+      def initialize(task, max_length)
         @task = task
+        @length = max_length
       end
 
-      def description(length = nil, options = {})
-        if length
-          break_line_to_fit(@task.description, length, options)
-        else
-          @task.description
-        end
+      def description
+        format_component(@task.description)
       end
 
-      def time
-        format = "%H:%M"
-        if @task.done?
-          "[#{@task.completed_at.strftime(format)}]"
-        else
-          "(#{@task.created_at.strftime(format)})"
-        end
-      end
-
-      def notes(length = nil, options = {})
+      def notes
         return "" if @task.notes.empty?
-        "\n\n" + @task.notes.map do |n|
-          if length
-            break_line_to_fit(n, length, options)
-          else
-            n.rjust(n.size + done.size + 1)
-          end
-        end.join("\n") + "\n\n"
-      end
-      
-      def done
-        "[#{@task.done? ? '+' : ' '}]"
+        "\n\n" + @task.notes.map { |n| note(n) }.join("\n") + "\n\n"
       end
 
-      def to_s(length = nil)
-        c = components(length)
-        "#{c.done} #{c.description} #{c.time}#{c.notes}"
+      def note(n)
+        format_component(n)
+      end
+
+      def to_s
+        "#{description.lstrip}#{notes}"
       end
 
       private
 
-      def components(length = nil)
-        if length
-          description_length = length - done.length - time.length - 2
-          description_padding = done.length + 1
-          formatted_description = description(description_length, :left_padding => description_padding)
-
-          notes_length = length - done.length - 1
-          notes_first_line_padding = done.length + 1
-          notes_padding = notes_first_line_padding + 2
-          formatted_notes = notes(notes_length, :first_line_padding => notes_first_line_padding, :left_padding => notes_padding)
-
-          Components.new(done, formatted_description, time, formatted_notes)
-        else
-          Components.new(done, description, time, notes)
-        end
+      def format_component(str)
+        r = break_line_to_fit(str)
+        pad_str(r)
       end
 
-      def break_line_to_fit(str, length, options = {})
-        first_line_padding = options[:first_line_padding]
-        left_padding       = options[:left_padding]
-        padding_diff       = (left_padding - first_line_padding) if first_line_padding && left_padding
-        available_length   = length - padding_diff.to_i
+      def break_line_to_fit(str)
+        str.gsub(/(.{1,#{length}})(?:\s+|\Z)|(.{1,#{length}})/m, "\\1\\2\n")
+      end
 
-        lines = str.gsub(/(.{1,#{available_length}})(?:\s+|\Z)|(.{1,#{available_length}})/m, "\\1\\2\n").split("\n")
+      def pad_str(str)
+        padding_str = " " * padding.to_i
+        str.each_line.map do |line|
+          padding_str + line.strip
+        end.join("\n")
+      end
 
-        lines.map! do |line|
-          line.strip.ljust(available_length).rjust(available_length + left_padding.to_i) 
-        end
+      def padding
+        2
+      end
 
-        lines[0] = lines.first.strip.ljust(length).rjust(length + first_line_padding.to_i)
-        lines.join("\n")
+      def length
+        @length - padding
       end
     end
-
   end
 end
 
