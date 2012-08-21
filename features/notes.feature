@@ -25,3 +25,17 @@ Feature: Manage task notes
     Then the output should not contain "Trash the PC"
     And the output should contain "boom"
 
+  Scenario: Parse inline notes
+    When I successfully run `medo --tasks-file=/tmp/test-medo-tasks new "Hello\nWorld\n\nThe Notes"`
+    And I successfully run `medo --tasks-file=/tmp/test-medo-tasks show`
+    Then the output should contain exactly:
+    """
+    Task added
+    Hello
+      World
+
+      The Notes
+
+
+    """
+

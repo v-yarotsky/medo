@@ -4,8 +4,11 @@ command [:new, :n] do |c|
   c.switch [:e, :editor]
 
   c.action do |global_options, options, args|
-    task_description = get_input
-    task, number = Task.new(task_description)
+    input = get_input
+    tag, description, notes = input.match(/\A(?:(?:\[(?<tag>.+)\]) )?(?:(?<description>.*\n\n|.*))(?:(?<notes>.*))?/m).captures.map(&:to_s).map(&:strip)
+    task, number = Task.new(description)
+    task.notes = notes unless String(notes).empty?
+    task.tag   = tag
     committing_tasks { tasks << task }
     puts "Task added"
   end

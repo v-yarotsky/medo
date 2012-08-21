@@ -22,6 +22,14 @@ module Medo
         @tasks.select(&:done?).sort_by { |t| t.created_at }.reverse
       end
 
+      def tagged(tag)
+        self.class.new @tasks.select { |t| t.tagged_with?(tag) }
+      end
+
+      def empty?
+        @tasks.empty?
+      end
+
       def <<(task)
         @tasks << task
         self
@@ -67,6 +75,10 @@ module Medo
         format_component(@task.description)
       end
 
+      def tag
+        "[#{@task.tag}]" unless String(@task.tag).empty?
+      end
+
       def notes
         return "" if @task.notes.empty?
         "\n\n" + @task.notes.map { |n| note(n) }.join("\n") + "\n\n"
@@ -77,7 +89,7 @@ module Medo
       end
 
       def to_s
-        "#{description.lstrip}#{notes}"
+        "#{tag} #{description.lstrip}#{notes}".lstrip
       end
 
       private

@@ -16,9 +16,13 @@ module Medo
         module TaskColors
           extend Support::Decorator
 
-          def description
-            str = super.lstrip
-            preserve_size(str, str.bright)
+          def number
+            super.to_s.color(:red)
+          end
+
+          def tag
+            str = super
+            str.bright unless String(str).empty?
           end
 
           private

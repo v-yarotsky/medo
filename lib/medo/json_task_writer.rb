@@ -22,6 +22,7 @@ module Medo
         {
           :done         => @task.done?,
           :description  => @task.description,
+          :tag          => @task.tag,
           :created_at   => @task.created_at,
           :completed_at => (@task.completed_at if @task.done?),
           :notes        => @task.notes

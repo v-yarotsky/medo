@@ -4,7 +4,8 @@ module Medo
   class Task
     include Comparable
 
-    attr_reader :description, :created_at, :completed_at, :notes
+    attr_reader :description, :created_at, :completed_at, :notes, :tag
+    attr_accessor :tag
 
     class << self
       attr_accessor :clock
@@ -26,6 +27,7 @@ module Medo
       @created_at   = clock.now
       @completed_at = nil
       self.notes    = options["notes"] || options[:notes]
+      self.tag      = options["tag"]   || options[:tag] || ""
     end
 
     def <=>(other)
@@ -48,7 +50,8 @@ module Medo
         self.created_at   == other.created_at &&
         self.done?        == other.done? &&
         self.completed_at == other.completed_at &&
-        self.notes        == other.notes
+        self.notes        == other.notes &&
+        self.tag          == other.tag
     end
 
     def initialize_copy(source)
@@ -57,6 +60,7 @@ module Medo
       @created_at   = @created_at.dup
       @completed_at = @completed_at.dup if @completed_at
       @notes        = @notes.dup
+      @tag          = @tag.dup
     end
 
     def description=(desc)
@@ -81,6 +85,10 @@ module Medo
 
     def done?
       !!@done
+    end
+
+    def tagged_with?(tag)
+      self.tag.to_s == tag.to_s
     end
 
     private

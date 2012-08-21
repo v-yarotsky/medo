@@ -11,6 +11,11 @@ describe TextTaskWriter do
     TextTaskWriter.new(tasks, fake_output)
   end
 
+  before(:each) do
+    pending_task.stub(:tag => "")
+    completed_task.stub(:tag => "")
+  end
+
   describe "#write" do
     it "should pretty print the task to STDOUT" do
       task_writer([pending_task], []).write
@@ -95,6 +100,18 @@ Buy Milk
   Honorificabilitu
   dinitatibus word
 
+      TXT
+    end
+
+    it "should print tag" do
+      Terminal.stub(:instance => stub(:size => [18, 40])) #cols, lines
+
+      pending_task.stub(:tag => "the-tag")
+
+      task_writer([pending_task], []).write
+
+      fake_output.string.should == <<-TXT
+[the-tag] Buy Milk
       TXT
     end
   end

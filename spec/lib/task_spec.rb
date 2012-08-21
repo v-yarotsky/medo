@@ -13,6 +13,11 @@ describe Medo::Task do
     Medo::Task.new("description", :notes => ["1", "2"])
   end
 
+  it "should allow tag to be set upon creation" do
+    task = Medo::Task.new("description", :tag => "qux")
+    task.tag.should == "qux"
+  end
+
   it "should assign creation time upon instantiation" do
     fake_clock = stub(:now => Time.now)
     using_fake_clock(fake_clock) do
@@ -70,14 +75,16 @@ describe Medo::Task do
       created_at   = Time.now
       completed_at = Time.now
       task = Medo::Task.from_attributes("description"  => "d", 
+                                        "tag"          => "the_tag",
                                         "notes"        => "n", 
                                         "done"         => true, 
                                         "completed_at" => completed_at, 
                                         "created_at"   => created_at)
-      task.description.should  ==  "d"
-      task.notes.should        ==  "n"
-      task.completed_at.should ==  completed_at
-      task.created_at.should   ==  created_at
+      task.description.should  == "d"
+      task.tag.should          == "the_tag"
+      task.notes.should        == "n"
+      task.completed_at.should == completed_at
+      task.created_at.should   == created_at
       task.should be_done
     end
 
@@ -117,6 +124,26 @@ describe Medo::Task do
       expect do
         task.description = nil
       end.to raise_error ArgumentError
+    end
+  end
+
+  context "#tag=" do
+    it "should assign a tag" do
+      task = Medo::Task.new("description")
+      task.tag = "the_tag"
+      task.tag.should == "the_tag"
+    end
+  end
+
+  context "#tagged_with?" do
+    let(:task) { Medo::Task.new("description", :tag => "qux") }
+
+    it "should return true if task has the specified tag" do
+      task.tagged_with?("qux").should == true
+    end
+
+    it "should return false if task does not have the specified tag" do
+      task.tagged_with?("yummy").should == false
     end
   end
 
