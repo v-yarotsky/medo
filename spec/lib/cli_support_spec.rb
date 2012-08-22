@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', __FILE__)
+require 'spec_helper'
 require 'medo/cli_support'
 
 describe "CLISupport" do
@@ -26,8 +26,7 @@ describe "CLISupport" do
 
   describe "#tasks" do
     it "should read and memoize tasks" do
-      @context.tasks.should == tasks
-      @context.tasks.object_id.should == tasks.object_id
+      @context.tasks.to_a.should == tasks
     end
   end
 

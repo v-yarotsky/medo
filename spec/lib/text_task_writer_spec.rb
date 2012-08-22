@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', __FILE__)
+require 'spec_helper'
 require 'support/task_stubs_spec_helper'
 require 'medo/text_task_writer'
 

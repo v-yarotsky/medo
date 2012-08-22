@@ -10,8 +10,8 @@ command [:show, :cat] do |c|
   c.action do |global_options, options, args|
     include TextTaskWriter::Decorators
     task, number = choose_task
-    m_tasks = TasksCollection.new([task])
-    writer = TextTaskWriter.new(m_tasks)
+    tasks_to_show = TasksCollection.new([task])
+    writer = TextTaskWriter.new(tasks_to_show)
     colorize { ColorsDecorator.decorate(writer) }
     writer.write
   end

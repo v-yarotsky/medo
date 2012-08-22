@@ -30,6 +30,16 @@ module Medo
       @tasks << task
       self
     end
+
+    def [](index)
+      @tasks[index]
+    end
+
+    def ==(other)
+      return true if self.equal?(other)
+      return false unless self.class === other
+      self.each_with_index.all? { |t, i| t == other[i] }
+    end
   end
 end
 

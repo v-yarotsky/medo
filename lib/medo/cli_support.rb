@@ -1,3 +1,5 @@
+require 'medo/tasks_collection'
+
 module Medo
   module CLISupport
     def load_commands
@@ -8,8 +10,9 @@ module Medo
     end
 
     def tasks
-      @tasks ||= storage.read
-      @original_tasks ||= @tasks.map(&:dup)
+      @_raw_tasks ||= storage.read
+      @tasks ||= TasksCollection.new(@_raw_tasks)
+      @original_tasks ||= TasksCollection.new(@_raw_tasks.map(&:dup))
       @tasks
     end
 
@@ -21,7 +24,7 @@ module Medo
       yield
 
       if tasks_changed?
-        storage.write(tasks)
+        storage.write(tasks.to_a)
         storage.commit
       end
     end
