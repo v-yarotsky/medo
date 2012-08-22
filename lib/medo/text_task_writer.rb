@@ -15,11 +15,11 @@ module Medo
       end
 
       def active
-        @tasks.reject(&:done?).sort_by { |t| t.completed_at }.reverse
+        @tasks.reject(&:done?).sort_by { |t| t.created_at }.reverse
       end
 
       def completed
-        @tasks.select(&:done?).sort_by { |t| t.created_at }.reverse
+        @tasks.select(&:done?).sort_by { |t| t.completed_at }.reverse
       end
 
       def tagged(tag)

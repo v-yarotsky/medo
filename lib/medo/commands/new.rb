@@ -5,7 +5,7 @@ command [:new, :n] do |c|
 
   c.action do |global_options, options, args|
     input = get_input
-    tag, description, notes = input.match(/\A(?:(?:\[(?<tag>.+)\]) )?(?:(?<description>.*\n\n|.*))(?:(?<notes>.*))?/m).captures.map(&:to_s).map(&:strip)
+    tag, description, notes = input.match(/\A(?:(?:\[(.+)\]) )?(?:(.*\n\n|.*))(?:(.*))?/m).captures.map(&:to_s).map(&:strip)
     task, number = Task.new(description)
     task.notes = notes unless String(notes).empty?
     task.tag   = tag
