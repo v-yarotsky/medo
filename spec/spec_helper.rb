@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'bundler/setup'
 
 if ENV['COVERAGE']
@@ -14,9 +13,6 @@ end
 
 require 'rspec'
 require 'rspec/autorun'
-
-$:.unshift File.expand_path(File.dirname(__FILE__))
-$:.unshift File.expand_path('../lib', File.dirname(__FILE__))
 
 require 'medo'
 require 'medo/support'
