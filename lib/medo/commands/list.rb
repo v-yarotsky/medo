@@ -1,4 +1,5 @@
 require 'medo/text_task_writer'
+require 'medo/tasks_collection'
 
 desc "List all todos"
 command [:list, :ls] do |c|
@@ -10,7 +11,7 @@ command [:list, :ls] do |c|
 
   c.action do |global_options, options, args|
     include TextTaskWriter::Decorators
-    m_tasks = TextTaskWriter::TasksCollection.new(tasks)
+    m_tasks = TasksCollection.new(tasks)
     m_tasks = m_tasks.tagged(options[:tag]) if options[:tag]
     puts("no tasks") && break if m_tasks.empty?
     writer = NumbersDecorator.decorate(TextTaskWriter.new(m_tasks),

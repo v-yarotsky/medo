@@ -37,7 +37,7 @@ module Medo
           end
 
           def padding
-            super + number.length + 1
+            super + number.size + 1
           end
 
           def to_s

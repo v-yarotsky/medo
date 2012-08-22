@@ -17,12 +17,15 @@ module Medo
           extend Support::Decorator
 
           def number
-            super.to_s.color(:red)
+            str = super.to_s
+            preserve_size(str, str.color(:red))
           end
 
           def tag
             str = super
-            str.bright unless String(str).empty?
+            unless String(str).empty?
+              preserve_size(str, str.bright)
+            end
           end
 
           private
